@@ -138,6 +138,7 @@ app.post('/submit', conditionalUpload, (req, res) => {
     return res.status(200).json({ status: 'ok' });
   }
 
+  console.log('✏️ Drawing submitted', { sectionId, drawingLength: drawing?.length });
   if (drawing && sectionId === 'drawing') {
     try {
       const drawingBuffer = Buffer.from(drawing.replace(/^data:image\/png;base64,/, ''), 'base64');

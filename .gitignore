@@ -4,8 +4,6 @@
 # 🧠 Node dependencies
 node_modules/
 
-# 🖼 Uploaded files (optional if saved elsewhere)
-uploads/
 
 # 🧼 System + IDE clutter
 .DS_Store
