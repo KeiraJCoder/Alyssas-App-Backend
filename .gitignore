@@ -1,0 +1,24 @@
+# 🌱 Environment config
+.env
+
+# 🧠 Node dependencies
+node_modules/
+
+# 🖼 Uploaded files (optional if saved elsewhere)
+uploads/
+
+# 🧼 System + IDE clutter
+.DS_Store
+Thumbs.db
+
+# 🪲 Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# 📦 Optional lock file
+package-lock.json
+
+# ⚙️ VSCode/project files
+.vscode/
+*.code-workspace

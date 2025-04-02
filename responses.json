@@ -1,0 +1,100 @@
+{
+  "2025-04-02": {
+    "question-spinner": [
+      {
+        "question": "What colour is happiness?",
+        "answer": "green",
+        "timestamp": "2025-04-02T15:29:41.957Z"
+      },
+      {
+        "question": "Which dinosaur would make a good pet?",
+        "answer": "triceratops",
+        "timestamp": "2025-04-02T14:59:40.819Z"
+      },
+      {
+        "question": "If you had a robot helper, what would it do?",
+        "answer": "make me toast",
+        "timestamp": "2025-04-02T14:59:06.755Z"
+      },
+      {
+        "question": "What sound makes you laugh every time?",
+        "answer": "fart",
+        "timestamp": "2025-04-02T14:58:44.139Z"
+      },
+      {
+        "question": "What would a dreamland made of cake look like?",
+        "answer": "tasty",
+        "timestamp": "2025-04-02T14:58:33.291Z"
+      },
+      {
+        "question": "What would a chicken say if it could talk?",
+        "answer": "hello im a chicken",
+        "timestamp": "2025-04-02T14:58:20.379Z"
+      },
+      {
+        "question": "What makes you feel brave?",
+        "answer": "helping others",
+        "timestamp": "2025-04-02T14:57:54.835Z"
+      },
+      {
+        "question": "Would you rather be invisible or super strong?",
+        "answer": "invisible",
+        "timestamp": "2025-04-02T14:57:34.490Z"
+      },
+      {
+        "question": "What animal makes you laugh the most?",
+        "answer": "monkeys",
+        "timestamp": "2025-04-02T14:54:28.225Z"
+      },
+      {
+        "question": "What was the strangest dream you remember?",
+        "answer": "flying to china",
+        "timestamp": "2025-04-02T14:53:53.057Z"
+      },
+      {
+        "question": "What was the strangest dream you remember?",
+        "answer": "flying to china",
+        "timestamp": "2025-04-02T14:53:53.057Z"
+      },
+      {
+        "question": "Would you sail the sea or sky?",
+        "answer": "sky",
+        "timestamp": "2025-04-02T14:51:56.880Z"
+      },
+      {
+        "question": "Would you sail the sea or sky?",
+        "answer": "sky",
+        "timestamp": "2025-04-02T14:51:56.880Z"
+      },
+      {
+        "question": "Would your outfit change colours with your mood?",
+        "answer": "yes please",
+        "timestamp": "2025-04-02T14:51:33.168Z"
+      },
+      {
+        "question": "Would your outfit change colours with your mood?",
+        "answer": "yes please",
+        "timestamp": "2025-04-02T14:51:33.168Z"
+      },
+      {
+        "question": "If dancing was magic, what spell would it cast?",
+        "answer": "love",
+        "timestamp": "2025-04-02T14:48:32.047Z"
+      },
+      {
+        "question": "If dancing was magic, what spell would it cast?",
+        "answer": "love",
+        "timestamp": "2025-04-02T14:48:32.047Z"
+      }
+    ],
+    "show-tell": {
+      "imageHistory": [
+        "/uploads/1743606781614-my-drawing.png"
+      ],
+      "text": "a frog"
+    },
+    "mood-check": {
+      "text": "You picked: 😃"
+    }
+  }
+}
