@@ -8,7 +8,9 @@ const bodyParser = require('body-parser');
 const app = express();
 const cors = require('cors');
 
-app.use(cors({ origin: 'http://127.0.0.1:5500' }));
+app.use(cors({
+  origin: ['https://keirajcoder.github.io', 'http://127.0.0.1:5500']
+}));
 
 // Setup storage for image uploads
 const storage = multer.diskStorage({
