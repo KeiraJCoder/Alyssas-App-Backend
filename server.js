@@ -279,50 +279,55 @@ app.post('/submit', conditionalUpload, async (req, res) => {
       const { createCanvas, loadImage } = require('canvas');
       const base64Data = drawing.replace(/^data:image\/png;base64,/, '');
       const buffer = Buffer.from(base64Data, 'base64');
-
-      // Load the PNG image from buffer
-      const img = await loadImage(buffer);
-      const canvas = createCanvas(img.width, img.height);
-      const ctx = canvas.getContext('2d');
-
-      // Fill background with white
-      ctx.fillStyle = '#ffffff';
-      ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-      // Draw original image over white background
-      ctx.drawImage(img, 0, 0);
-
-      // Save as JPEG (with white background)
-      const filename = `drawing-${Date.now()}.jpg`;
-      const filepath = path.join(__dirname, 'uploads', filename);
-      const out = fs.createWriteStream(filepath);
-      const stream = canvas.createJPEGStream({ quality: 0.95 });
-      stream.pipe(out);
-
-      out.on('finish', () => {
-        const url = `/uploads/${filename}`;
-        if (!allData[today]['drawing']) allData[today]['drawing'] = {};
-        if (!allData[today]['drawing'].imageUrls) allData[today]['drawing'].imageUrls = [];
-
-        if (allData[today]['drawing'].imageUrls.length < 5) {
-          allData[today]['drawing'].imageUrls.push(url);
-        }
-
-        fs.writeFileSync(DATA_FILE, JSON.stringify(allData, null, 2));
-        return res.status(200).json({ status: 'ok' });
+  
+      // Load the PNG image from buffer (using .then() instead of await)
+      loadImage(buffer).then(img => {
+        const canvas = createCanvas(img.width, img.height);
+        const ctx = canvas.getContext('2d');
+  
+        // Fill background with white
+        ctx.fillStyle = '#ffffff';
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+  
+        // Draw original image
+        ctx.drawImage(img, 0, 0);
+  
+        const filename = `drawing-${Date.now()}.jpg`;
+        const filepath = path.join(__dirname, 'uploads', filename);
+        const out = fs.createWriteStream(filepath);
+        const stream = canvas.createJPEGStream({ quality: 0.95 });
+  
+        stream.pipe(out);
+  
+        out.on('finish', () => {
+          const url = `/uploads/${filename}`;
+          if (!allData[today]['drawing']) allData[today]['drawing'] = {};
+          if (!allData[today]['drawing'].imageUrls) allData[today]['drawing'].imageUrls = [];
+          if (allData[today]['drawing'].imageUrls.length < 5) {
+            allData[today]['drawing'].imageUrls.push(url);
+          }
+          fs.writeFileSync(DATA_FILE, JSON.stringify(allData, null, 2));
+          res.status(200).json({ status: 'ok' });
+        });
+  
+        out.on('error', err => {
+          console.error('Stream error:', err);
+          res.status(500).json({ error: 'Failed to save drawing.' });
+        });
+  
+      }).catch(err => {
+        console.error('Image loading error:', err);
+        res.status(500).json({ error: 'Drawing save failed.' });
       });
-
-      out.on('error', (err) => {
-        console.error('Stream error:', err);
-        return res.status(500).json({ error: 'Failed to save drawing.' });
-      });
-
-      return; // Prevent falling through to final response
+  
+      return; // prevent fallthrough
+  
     } catch (err) {
       console.error('Drawing conversion error:', err);
       return res.status(500).json({ error: 'Drawing save failed.' });
     }
   }
+  
 
   if (Array.isArray(finalData)) {
     if (!Array.isArray(allData[today][sectionId])) {
