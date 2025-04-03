@@ -746,9 +746,9 @@ function downloadDrawing() {
 =============================== */
 function playSound(type) {
   const soundMap = {
-    star: 'assets/sounds/star.mp3',
-    spin: 'assets/sounds/spin.mp3',
-    reset: 'assets/sounds/reset.mp3'
+    star: '/static/assets/sounds/star.mp3',
+    spin: '/static/assets/sounds/spin.mp3',
+    reset: '/static/assets/sounds/reset.mp3'
   };
 
   const soundSrc = soundMap[type];
