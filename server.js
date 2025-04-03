@@ -280,20 +280,24 @@ app.post('/submit', conditionalUpload, async (req, res) => {
     const buffer = Buffer.from(base64Data, 'base64');
   
     try {
-      // Convert PNG to JPEG with white background
       const img = await loadImage(buffer);
       const canvas = createCanvas(img.width, img.height);
       const ctx = canvas.getContext('2d');
   
       ctx.fillStyle = '#ffffff';
-      ctx.fillRect(0, 0, canvas.width, canvas.height); // White background
-      ctx.drawImage(img, 0, 0); // Draw image
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+      ctx.drawImage(img, 0, 0);
   
       const filename = `drawing-${Date.now()}.jpg`;
       const filepath = path.join(__dirname, 'uploads', filename);
       const out = fs.createWriteStream(filepath);
       const stream = canvas.createJPEGStream({ quality: 0.95 });
       stream.pipe(out);
+  
+      out.on('error', (err) => {
+        console.error('Stream error:', err);
+        return res.status(500).json({ error: 'Failed to save drawing.' });
+      });
   
       out.on('finish', () => {
         const url = `/uploads/${filename}`;
@@ -305,18 +309,16 @@ app.post('/submit', conditionalUpload, async (req, res) => {
         }
   
         fs.writeFileSync(DATA_FILE, JSON.stringify(allData, null, 2));
-        return res.status(200).json({ status: 'ok' });
+        return res.status(200).json({ status: 'ok' });  // ✅ Only send one response here
       });
   
-      out.on('error', (err) => {
-        console.error('Stream error:', err);
-        return res.status(500).json({ error: 'Failed to save drawing.' });
-      });
+      return; // ✅ Prevent the rest of the route from sending a second response
     } catch (err) {
       console.error('Drawing conversion error:', err);
       return res.status(500).json({ error: 'Drawing save failed.' });
     }
   }
+  
   
   
 
