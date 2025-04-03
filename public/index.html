@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Call Companion</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>🌟 Alyssa's App 🌟</h1>
+      <p>Your magical helper for video calls!</p>
+    </header>
+
+    <main>
+
+      <!-- Mood Check Section (default visible) -->
+      <section id="mood-check" class="card">
+        <h2>How are you feeling right now?</h2>
+        <p>Pick a face that matches your mood!</p>
+        <div class="emoji-options">
+          <button class="emoji" onclick="selectMood('😃')">😃</button>
+          <button class="emoji" onclick="selectMood('😐')">😐</button>
+          <button class="emoji" onclick="selectMood('😢')">😢</button>
+          <button class="emoji" onclick="selectMood('😴')">😴</button>
+          <button class="emoji" onclick="selectMood('😜')">😜</button>
+        </div>
+        <p id="selectedMood" style="text-align:center; font-size:1.5rem;"></p>
+      </section>
+
+      <!-- Navigation Buttons -->
+      <nav class="navigation">
+        <button onclick="toggleSection('show-tell')">🏱 Show & Tell</button>
+        <button onclick="toggleSection('question-spinner')">🌡 Question Spinner</button>
+        <button onclick="toggleSection('activity-choice')">🏃 Activity Choice</button>
+        <button onclick="toggleSection('drawing-section')">🎨 Drawing</button>
+      </nav>
+
+      <!-- Show & Tell Section (hidden by default) -->
+    <section id="show-tell" class="card hidden">
+        <h2><span class="icon">🏱</span> Show & Tell</h2>
+        <p class="description">Want to show something cool during our call?</p>
+        <p>Upload an image and tell us what it is and why you wanted to share!</p>
+    
+        <div class="input-group">
+        <input type="text" id="showTellInput" placeholder="Explain whats in the picture..." class="text-input" />
+        </div>
+    
+        <div class="input-group">
+        <label for="photoUpload" class="upload-label">📷 Add photo:</label>
+        <input type="file" id="photoUpload" accept="image/*" class="file-input" />
+        
+        <div id="imagePreviewContainer" aria-live="polite"></div>
+        <button type="button" class="submit-button">📤 Send Photo</button>
+
+        <p id="showTellCountMessage" style="font-weight:bold; margin-top:10px;"></p>
+        </div>
+    </section>
+  
+
+      <!-- Question Spinner Section -->
+      <section id="question-spinner" class="card hidden">
+        <h2>🌡 Spin for a Fun Question!</h2>
+        <div class="spinner-wrapper">
+          <div class="wheel-pointer">🔻</div>
+          <canvas id="questionWheel" width="300" height="300"></canvas>
+        </div>
+        <button id="spinWheel">🌡 Spin the Wheel!</button>
+        <p id="questionText" class="question-result">Spin to get a fun thing to talk about!</p>
+        <p>You can answer in the box OR just talk about it with us!</p>
+        <input type="text" placeholder="Write your answer here..." />
+        <div class="skip-row">
+            <button id="skipQuestionBtn">⏭ Skip</button>
+            <span id="skipCounter">Skips left: 3</span>
+          </div>
+          
+          
+        <h2>Your Answers</h2>
+        <ul id="answerList"></ul>
+        <button type="button" onclick="completeSection('question-spinner')">✅ Done with questions!</button>
+      </section>
+
+      <!-- Shared Activity Section -->
+      <section id="activity-choice" class="card hidden">
+        <h2>🎨 Let's Try Fun Things!</h2>
+        <p>Pick 3 things you'd like to do on the call!:</p>
+        <ul class="activity-list">
+            <li><strong>🎨 Creative Play</strong></li>
+            <li><button onclick="selectActivity('Draw together', this)">✏️ Draw together</button></li>
+            <li><button onclick="selectActivity('Play with Play-Doh or clay', this)">🌀 Play with Play-Doh or clay</button></li>
+            <li><button onclick="selectActivity('Make up a silly story together', this)">📚 Make up a silly story</button></li>
+            <li><button onclick="selectActivity('Invent a secret handshake', this)">🤝 Invent a secret handshake</button></li>
+            <li><button onclick="selectActivity('Do a pretend talent show', this)">🎭 Pretend talent show</button></li>
+          
+            <li><strong>💫 Quiet Time</strong></li>
+            <li><button onclick="selectActivity('Swing & listen to music together', this)">🎧 Swing & listen to music</button></li>
+            <li><button onclick="selectActivity('Read me a story', this)">📖 Read me a story</button></li>
+            <li><button onclick="selectActivity('Just chill and chat', this)">🌈 Just chill & chat</button></li>
+            <li><button onclick="selectActivity('Talk about something important', this)">💬 Talk about something important</button></li>
+          
+            <li><strong>😜 Silly Fun</strong></li>
+            <li><button onclick="selectActivity('Play a guessing game', this)">🧠 Play a guessing game</button></li>
+            <li><button onclick="selectActivity('Sing karaoke or dance', this)">🎤 Sing karaoke or dance</button></li>
+            <li><button onclick="selectActivity('Pull a practical joke (silly one!)', this)">🤪 Pull a practical joke</button></li>
+          
+            <li><strong>🧠 Learn & Explore</strong></li>
+            <li><button onclick="selectActivity('Do a science experiment', this)">🧪 Do a science experiment</button></li>
+            <li><button onclick="selectActivity('Teach me something new', this)">🧑‍🏫 Teach me something</button></li>
+            <li><button onclick="selectActivity('Play a board game', this)">🎲 Play a board game</button></li>
+            <li><button onclick="selectActivity('Pretend you’re on a space adventure', this)">🚀 Space pretend game</button></li>
+            <li><button onclick="selectActivity('Do a mini yoga or stretch', this)">🧘 Mini yoga or stretch</button></li>
+          </ul>
+          
+          
+          
+        <p id="selectedActivity" style="text-align:center; font-weight:bold;"></p>
+        <button type="button" onclick="completeSection('activity-choice')">✅ Ready to go!</button>
+
+      </section>
+
+
+      <!-- 🎨 Drawing Section -->
+      <section id="drawing-section" class="card hidden">
+        <h2>🎨 Let's Draw While We Chat</h2>
+        <p>You can draw up to 5 things per day! Just have fun with it!</p>
+
+        <div class="draw-area fullscreen-layout">
+
+          <!-- 🎛️ Buttons + Counter + Status in one flex wrapper -->
+          <div class="draw-button-wrapper">
+            <div class="fullscreen-controls">
+              <button type="button" onclick="clearCanvas()">🧽 Clear Drawing</button>
+              <button type="button" onclick="downloadDrawing()">📅 Download Drawing</button>
+              <button type="button" id="submitDrawingBtn" onclick="submitDrawing(event)">📤 Send Us Your Drawing</button>
+              <button type="button" id="fullscreenToggleButton" onclick="openFullscreen()">🖼 Fullscreen</button>
+            </div>
+
+            <!-- 🎨 Regular Colour Picker (Normal Mode) -->
+            <div class="colour-picker-wrapper">
+              <label for="normalColourPicker">Pick a colour:</label>
+              <input type="color" id="normalColourPicker" value="#000000" />
+            </div>
+
+            <!-- 🌈 Fullscreen Colour Swatches (Rainbow Gradient Style) -->
+            <div class="fullscreen-swatches hidden">
+              <!-- Rainbow Progression -->
+              <button class="swatch" data-colour="#FF0000" style="background:#FF0000;"></button> <!-- Red -->
+              <button class="swatch" data-colour="#FF7F00" style="background:#FF7F00;"></button> <!-- Orange -->
+              <button class="swatch" data-colour="#FFFF00" style="background:#FFFF00;"></button> <!-- Yellow -->
+              <button class="swatch" data-colour="#00FF00" style="background:#00FF00;"></button> <!-- Green -->
+              <button class="swatch" data-colour="#0000FF" style="background:#0000FF;"></button> <!-- Blue -->
+              <button class="swatch" data-colour="#4B0082" style="background:#4B0082;"></button> <!-- Indigo -->
+              <button class="swatch" data-colour="#8B00FF" style="background:#8B00FF;"></button> <!-- Violet -->
+
+              <!-- Soft & pastel versions -->
+              <button class="swatch" data-colour="#FFB6C1" style="background:#FFB6C1;"></button> <!-- Light Pink -->
+              <button class="swatch" data-colour="#FFDAB9" style="background:#FFDAB9;"></button> <!-- Peach -->
+              <button class="swatch" data-colour="#FFFFE0" style="background:#FFFFE0;"></button> <!-- Light Yellow -->
+              <button class="swatch" data-colour="#98FB98" style="background:#98FB98;"></button> <!-- Pale Green -->
+              <button class="swatch" data-colour="#ADD8E6" style="background:#ADD8E6;"></button> <!-- Light Blue -->
+              <button class="swatch" data-colour="#DDA0DD" style="background:#DDA0DD;"></button> <!-- Plum -->
+            </div>
+            <br>
+            <!-- Optional Colour Picker in Fullscreen -->
+            <div class="fullscreen-picker-row hidden">
+              <label for="fullscreenColourPicker">🎨 Custom Colour:</label>
+              <input type="color" id="fullscreenColourPicker" value="#000000" />
+            </div>
+
+            <!-- ✏️ Pen Size and Eraser Controls -->
+            <div class="pen-options">
+              <label for="penSize">✏️ Pen Size:</label>
+              <input type="range" id="penSize" min="1" max="20" value="3">
+              
+              <button id="eraserToggle" type="button">🩹 Eraser: Off</button>
+            </div>
+
+
+            <p id="drawingCounter" style="font-weight: bold; margin-top: 0.5rem;"></p>
+            <p id="drawingStatus" style="font-weight: bold; margin-top: 0.5rem;"></p>
+          </div>
+
+          <!-- 🖌️ Canvas Area -->
+          <div class="fullscreen-canvas">
+            <canvas id="drawCanvas" class="drawing-canvas" width="600" height="300"></canvas>
+          </div>
+        </div>
+      </section>
+
+
+      <!-- Reward Stars -->
+      <section id="reward-section" class="card">
+        <h2>You're a Star!</h2>
+        <p>Every time you try something, you earn a star! ⭐</p>
+        <p>Stars earned today:</p>
+        <div id="stars-earned">🌟</div>
+      </section>
+
+    </main>
+
+    <footer>
+      <p>Built with 💖 for magical conversations</p>
+      <button onclick="resetDailyFields()">🔄 Reset Today's Fields</button>
+    </footer>
+  </div>
+
+    <script type="module" src="script.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+</body>
+</html>

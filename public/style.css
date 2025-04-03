@@ -1,0 +1,810 @@
+/* Global Reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background: linear-gradient(to right, #ffd6f6, #d6f0ff);
+    font-family: 'Comic Sans MS', 'Poppins', sans-serif;
+    font-size: 16px;
+    color: #333;
+    line-height: 1.5;
+    min-height: 100vh;
+    text-align: center;
+}
+
+.container {
+    max-width: 800px;
+    margin: auto;
+    padding: 20px;
+}
+
+h2 {
+    text-align: center;
+}
+
+p {
+    text-align: center;
+}
+
+/* Header */
+header {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+header h1 {
+    font-size: 2.5rem;
+    color: #ff6ac1;
+    animation: bounce 1.5s ease infinite alternate;
+}
+
+header p {
+    font-size: 1.2rem;
+    color: #555;
+}
+
+/* Section Separators */
+.separator {
+    height: 12px;
+    background: linear-gradient(to right, #ffd6f6, #d6f0ff);
+    margin: 30px 0;
+    border-radius: 6px;
+}
+
+/* Sections */
+.card {
+    background: #ffffffcc;
+    border-radius: 16px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    margin-bottom: 20px;
+    transition: transform 0.2s ease;
+}
+
+.card:hover {
+    transform: scale(1.01);
+}
+
+.card h2 {
+    font-size: 1.5rem;
+    margin-bottom: 10px;
+    color: #444;
+}
+
+/* Inputs */
+input[type="text"],
+textarea {
+    width: 100%;
+    padding: 10px;
+    border: 2px solid #ccc;
+    border-radius: 10px;
+    margin: 10px 0;
+    font-size: 1rem;
+}
+
+button {
+    background: #6cc7ff;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 50px;
+    font-size: 1rem;
+    margin-top: 10px;
+    cursor: pointer;
+    color: #fff;
+    transition: background 0.2s ease, transform 0.1s ease;
+}
+
+button:hover {
+    background: #4aa8df;
+    transform: scale(1.05);
+}
+
+button:active {
+    transform: scale(0.97);
+}
+
+/* Emoji Buttons */
+.emoji-options {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin: 10px 0;
+}
+
+.emoji {
+    font-size: 2rem;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    transition: transform 0.2s;
+}
+
+.emoji:hover {
+    transform: scale(1.2);
+}
+
+/* Activity Buttons */
+.activity-list {
+    list-style: none;
+    padding: 0;
+    display: grid;
+    gap: 10px;
+}
+
+.activity-list li {
+    margin: 0.5rem 0;
+}
+
+.activity-list li strong {
+    display: block;
+    font-size: 1.2rem;
+    margin: 1rem 0 0.5rem;
+    color: #333;
+    text-align: left;
+}
+
+.activity-list li button {
+    width: 100%;
+    background: #ffb347;
+    font-weight: bold;
+    border-radius: 50px;
+    transition: transform 0.2s ease;
+}
+
+.activity-list li button:hover {
+    background: #ffa03a;
+    transform: scale(1.03);
+}
+
+.activity-list button.selected {
+    background-color: #2f9e5d;
+    border: 2px solid #249e4a;
+    box-shadow: 0 0 8px rgba(0, 0, 0, 0.2);
+    transition: background-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+/* Stars Section */
+#stars-earned {
+    font-size: 2rem;
+    text-align: center;
+    margin-top: 10px;
+}
+
+#stars-earned span:hover {
+    filter: drop-shadow(0 0 5px gold);
+    transform: scale(1.2);
+    transition: all 0.2s ease;
+}
+
+/* Footer */
+footer {
+    text-align: center;
+    margin-top: 40px;
+    font-size: 0.9rem;
+    color: #888;
+}
+
+/* Fun bounce animation */
+@keyframes bounce {
+    0%   { transform: translateY(0); }
+    100% { transform: translateY(-10px); }
+}
+
+  
+/* Show & Tell Section */
+.show-tell {
+    background: linear-gradient(to bottom right, #ffe6f2, #e0f7ff);
+    padding: 25px;
+    border-radius: 20px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+  }
+  
+  .show-tell h2 {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.6rem;
+    margin-bottom: 10px;
+    color: #444;
+  }
+  
+  .show-tell .icon {
+    margin-right: 10px;
+  }
+  
+  .show-tell .description {
+    font-size: 1rem;
+    margin-bottom: 15px;
+    color: #333;
+  }
+  
+  .input-group {
+    margin-bottom: 20px;
+  }
+  
+  .upload-label,
+  .draw-label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 6px;
+    color: #444;
+    text-align: left;
+  }
+  
+  #imagePreviewContainer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 10px;
+  }
+  
+  #imagePreviewContainer img {
+    max-width: 100%;
+    max-height: 200px;
+    border-radius: 10px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  }
+  
+  .text-input,
+  .file-input {
+    width: 100%;
+    padding: 10px;
+    font-size: 1rem;
+    border-radius: 10px;
+    border: 2px solid #ccc;
+    background: #fff;
+    transition: border-color 0.2s ease;
+  }
+  
+  .text-input:focus,
+  .file-input:focus {
+    border-color: #6cc7ff;
+    outline: none;
+  }
+  
+/* ======================================
+   🎨 General Drawing Area Setup
+====================================== */
+#drawingControls {
+  display: none;
+  margin-top: 10px;
+  opacity: 0;
+  transform: translateY(-10px);
+  transition: opacity 0.3s ease, transform 0.3s ease;
+  text-align: center;
+}
+
+#drawingControls.visible {
+  display: block;
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.draw-area {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  max-width: 100%;
+  height: auto;
+}
+
+.canvas-wrapper {
+  width: 100%;
+  max-width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Drawing toolbar (e.g. colour picker) */
+.draw-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.text {
+  text-shadow: 1px 1px black;
+  color: rgb(0, 255, 4);
+}
+
+/* ======================================
+   🖌️ Canvas Styling (Normal View)
+====================================== */
+.drawing-canvas,
+canvas#drawCanvas {
+  width: 100%;
+  max-width: 100%;
+  height: auto;
+  max-height: 80vh;
+  background: white;
+  border-radius: 10px;
+  border: 2px solid #ccc;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  display: block;
+  margin: 0 auto;
+  cursor: crosshair;
+  touch-action: none;
+  transition: box-shadow 0.3s ease;
+}
+
+.drawing-canvas:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+
+/* Expand height to 100% in fullscreen */
+:fullscreen canvas#drawCanvas {
+  max-height: 100vh;
+  height: 100vh;
+}
+
+/* ======================================
+   🔘 Drawing Buttons (Below Canvas)
+====================================== */
+.draw-buttons {
+  margin-top: 10px;
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+}
+
+.draw-buttons button {
+  border-radius: 50px;
+  padding: 10px 16px;
+  font-size: 0.95rem;
+  background: #6cc7ff;
+  color: white;
+  border: none;
+  cursor: pointer;
+  transition: background 0.2s ease, transform 0.2s ease;
+}
+
+.draw-buttons button:hover {
+  background: #4aa8df;
+  transform: scale(1.05);
+}
+
+.draw-buttons button:active {
+  transform: scale(0.97);
+}
+
+.done-button {
+  background: #38c172;
+  margin-top: 10px;
+}
+
+/* ======================================
+   🌟 Activity Buttons Styling
+====================================== */
+.activity-list button.selected {
+  background-color: #2f9e5d;
+  border: 2px solid #249e4a;
+  box-shadow: 0 0 8px rgba(0, 0, 0, 0.2);
+  transition: background-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+/* ======================================
+   🎨 Drawing Area - Layout & Structure
+====================================== */
+.draw-area {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  max-width: 100%;
+  height: auto;
+}
+
+.canvas-wrapper,
+.fullscreen-canvas {
+  width: 100%;
+  max-width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.draw-button-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+
+/* ======================================
+   🖌️ Canvas Styling (Normal View)
+====================================== */
+.drawing-canvas,
+canvas#drawCanvas {
+  width: 100%;
+  max-width: 100%;
+  height: 300px; /* fixed height for consistency */
+  max-height: 80vh;
+  background: white;
+  border-radius: 10px;
+  border: 2px solid #ccc;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  display: block;
+  margin: 0 auto;
+  cursor: crosshair;
+  touch-action: none;
+  transition: box-shadow 0.3s ease;
+}
+
+.drawing-canvas:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+
+/* ======================================
+   🔘 Drawing Buttons (Normal View)
+====================================== */
+.draw-buttons {
+  margin-top: 10px;
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+}
+
+.draw-buttons button {
+  border-radius: 50px;
+  padding: 10px 16px;
+  font-size: 0.95rem;
+  background: #6cc7ff;
+  color: white;
+  border: none;
+  cursor: pointer;
+  transition: background 0.2s ease, transform 0.2s ease;
+}
+
+.draw-buttons button:hover {
+  background: #4aa8df;
+  transform: scale(1.05);
+}
+
+.draw-buttons button:active {
+  transform: scale(0.97);
+}
+
+.done-button {
+  background: #38c172;
+  margin-top: 10px;
+}
+
+
+/* ======================================
+   🎛️ Controls Row (Button Bar)
+====================================== */
+.fullscreen-controls {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  background: transparent;
+  padding: 0;
+  margin-bottom: 10px;
+  color: #222;
+  border-radius: 0;
+  box-shadow: none;
+}
+
+.fullscreen-controls button {
+  background: #6cc7ff;
+  color: white;
+  font-size: 1rem;
+  padding: 8px 16px;
+  border: none;
+  border-radius: 50px;
+  cursor: pointer;
+  transition: background 0.2s ease, transform 0.1s ease;
+}
+
+.fullscreen-controls button:hover {
+  background: #4aa8df;
+  transform: scale(1.05);
+}
+
+.fullscreen-controls button:active {
+  transform: scale(0.95);
+}
+
+
+/* ======================================
+   🎨 Colour Picker Row
+====================================== */
+.colour-picker-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.colour-picker-wrapper label {
+  font-weight: bold;
+  color: #444;
+}
+
+.colour-picker-wrapper input[type="color"] {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 2px solid white;
+  cursor: pointer;
+  background-color: transparent;
+  box-shadow: 0 0 3px rgba(0, 0, 0, 0.5);
+}
+
+/* ======================================
+   🌙 Fullscreen-Specific Overrides
+====================================== */
+:fullscreen .draw-area {
+  overflow: visible !important;
+}
+
+/* ======================================
+   🌙 Fullscreen Overrides
+====================================== */
+:fullscreen .fullscreen-layout {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  height: 100vh;
+  width: 100vw;
+  overflow: hidden;
+  background: #ccc;
+  margin: 0;
+  padding: 0;
+}
+
+:fullscreen .drawing-canvas {
+  flex: 1;
+  width: 100vw;
+  height: 100%;
+  max-height: calc(100vh - 80px);
+  position: relative;
+  top: 0;
+  z-index: 0;
+  border-radius: 0;
+}
+
+:fullscreen .fullscreen-controls {
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  row-gap: 8px;
+  column-gap: 10px;
+  max-height: 120px;
+  overflow-y: auto;
+  padding: 10px;
+}
+
+:fullscreen .fullscreen-controls button {
+  font-size: 0.85rem;
+  padding: 6px 12px;
+  background: #38c172;
+}
+
+:fullscreen .fullscreen-controls button:hover {
+  background: #2f9e5d;
+}
+
+:fullscreen .fullscreen-controls label {
+  color: limegreen;
+  text-shadow: 1px 1px black;
+}
+
+:fullscreen .fullscreen-controls input[type="color"] {
+  border: 2px solid white;
+}
+
+:fullscreen .colour-picker-wrapper {
+  z-index: 10001;
+}
+
+/* Adjust layout for small vertical screens */
+@media (max-height: 600px) {
+  :fullscreen .draw-button-wrapper {
+    max-height: 35vh;
+    overflow-y: auto;
+  }
+}
+
+  /* Optional: Emoji decorations */
+  #show-tell h2::before {
+    content: "🎁 ";
+  }
+  
+  #show-tell p:nth-of-type(2)::before {
+    content: "📷 ";
+  }
+  
+  #show-tell p:nth-of-type(3)::before {
+    content: "🎨 ";
+  }
+  
+/* Spinner Arrow */
+.wheel-pointer {
+  font-size: 2rem;
+  color: red;
+  margin-bottom: -10px;
+  z-index: 2;
+}
+
+/* Spinner Wrapper */
+.spinner-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+}
+
+/* Spinner Controls */
+.spinner-controls {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.spinner-controls button {
+  background-color: #ffd966;
+  border: none;
+  border-radius: 50px;
+  padding: 8px 16px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.2s ease, transform 0.1s ease;
+}
+
+.spinner-controls button:hover {
+  background-color: #f6c944;
+  transform: scale(1.05);
+}
+
+.spinner-controls button:active {
+  transform: scale(0.95);
+}
+
+.spinner-controls p {
+  font-weight: bold;
+  color: #333;
+  margin: 0;
+}
+
+
+/* Main Spinner Button */
+#question-spinner button {
+  background-color: #6fa8dc;
+  color: white;
+  padding: 10px 20px;
+  font-size: 1rem;
+  border: none;
+  border-radius: 50px;
+  margin: 10px auto;
+  cursor: pointer;
+  transition: background-color 0.2s ease, transform 0.1s ease;
+  display: block;
+}
+
+#question-spinner button:hover {
+  background-color: #3d85c6;
+  transform: scale(1.05);
+}
+
+#question-spinner button:active {
+  transform: scale(0.95);
+}
+
+/* Question Result Text */
+#questionText {
+  text-align: center;
+  font-size: 1.2rem;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  font-weight: bold;
+}
+
+/* Answer Input */
+#question-spinner input[type="text"] {
+  display: block;
+  margin: 10px auto;
+  max-width: 90%;
+  padding: 10px;
+  font-size: 1rem;
+  border-radius: 10px;
+  border: 2px solid #ccc;
+}
+
+/* Hideable Sections */
+.hidden {
+  display: none;
+}
+
+/* Navigation Buttons */
+.navigation {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.navigation button {
+  background-color: #6fa8dc;
+  color: white;
+  padding: 10px 15px;
+  border-radius: 50px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.navigation button:hover {
+  background-color: #3d85c6;
+}
+
+/* Saved Answers Container */
+#answerList li {
+    background-color: #fff8dc;
+    padding: 0.8rem 1.2rem;
+    margin: 0.5rem auto;
+    border-radius: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    font-size: 1rem;
+    font-family: 'Comic Sans MS', cursive;
+    color: #333;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    max-width: 90%;
+    text-align: left;
+    position: relative;
+    transition: transform 0.2s ease;
+  }
+  
+  #answerList li:hover {
+    transform: scale(1.03);
+  }
+  
+
+/* Hide answer box when empty */
+#answerList:empty {
+  display: none;
+}
+
+.loading {
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  border: 3px solid rgba(0, 0, 0, 0.2);
+  border-top: 3px solid #4b9cdb;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  vertical-align: middle;
+  margin-right: 8px;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+  
+  
