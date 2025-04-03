@@ -60,13 +60,100 @@ function loadResponses() {
 
 // Routes
 app.get('/login', (req, res) => {
+  const error = req.query.error === '1';
+
   res.send(`
-    <form method="POST" action="/login" style="text-align:center;margin-top:50px;">
+    <style>
+      body {
+        font-family: sans-serif;
+        background: #f9f9ff;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 100vh;
+        margin: 0;
+      }
+      .login-box {
+        background: #fff;
+        padding: 30px;
+        border-radius: 12px;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        width: 100%;
+        max-width: 350px;
+        text-align: center;
+      }
+      .login-box h2 {
+        margin-bottom: 10px;
+        text-transform: uppercase;
+        color: #444;
+      }
+      .login-box small {
+        display: block;
+        margin-bottom: 20px;
+        color: #888;
+      }
+      .login-box input {
+        width: 100%;
+        padding: 10px;
+        margin: 10px 0;
+        border: 1px solid #ccc;
+        border-radius: 6px;
+        font-size: 16px;
+      }
+      .password-wrapper {
+        position: relative;
+      }
+      .toggle-password {
+        position: absolute;
+        right: 12px;
+        top: 50%;
+        transform: translateY(-50%);
+        cursor: pointer;
+        font-size: 18px;
+        user-select: none;
+        color: #777;
+      }
+      .login-box button {
+        width: 100%;
+        padding: 12px;
+        background: #4CAF50;
+        color: white;
+        border: none;
+        border-radius: 6px;
+        font-size: 16px;
+        cursor: pointer;
+        transition: background 0.3s ease;
+      }
+      .login-box button:hover {
+        background: #45a049;
+      }
+      .error-message {
+        color: red;
+        margin-top: 10px;
+        font-weight: bold;
+      }
+    </style>
+
+    <div class="login-box">
       <h2>Login</h2>
-      <input name="username" placeholder="Username" required /> <br><br>
-      <input type="password" name="password" placeholder="Password" required /> <br><br>
-      <button type="submit">Login</button>
-    </form>
+      <small>🔒 Admin Access</small>
+      <form method="POST" action="/login">
+        <input name="username" placeholder="Username" required />
+        <div class="password-wrapper">
+          <input type="password" id="passwordInput" name="password" placeholder="Password" required />
+          <span class="toggle-password" onclick="togglePassword()">👁️</span>
+        </div>
+        <button type="submit">Login</button>
+      </form>
+      ${error ? `<div class="error-message">❌ Invalid username or password</div>` : ''}
+    </div>
+
+    <script>
+      function togglePassword() {
+        const input = document.getElementById('passwordInput');
+        input.type = input.type === 'password' ? 'text' : 'password';
+      }
+    </script>
   `);
 });
 
@@ -76,9 +163,10 @@ app.post('/login', (req, res) => {
     req.session.loggedIn = true;
     res.redirect('/view');
   } else {
-    res.send('<p>Login failed. <a href="/login">Try again</a></p>');
+    res.redirect('/login?error=1');
   }
 });
+
 
   app.get('/download-answers', requireLogin, (req, res) => {
     const filePath = path.resolve(DATA_FILE);
