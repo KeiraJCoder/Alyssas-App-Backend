@@ -1223,14 +1223,6 @@ function resetDailyFields() {
 }
 
 
-/* ===============================
-   TOGGLE Section Visibility
-=============================== */
-/**
- * Toggles visibility of a section.
- * Ensures only one section is open at a time.
- * Includes checks for daily limits and completion status.
- */
 function toggleSection(sectionId) {
   const section = document.getElementById(sectionId);
   if (!section) return;
@@ -1260,12 +1252,14 @@ function toggleSection(sectionId) {
   }
 
   // =============================
-  // 🔁 CLOSE ANY OTHER OPEN SECTIONS
+  // 🔁 CLOSE ANY OTHER OPEN SECTIONS (except reward stars)
   // =============================
 
   const allCards = document.querySelectorAll('.card');
   allCards.forEach(card => {
-    if (card !== section) card.classList.add('hidden');
+    if (card !== section && card.id !== 'reward-section') {
+      card.classList.add('hidden');
+    }
   });
 
   // =============================
@@ -1275,6 +1269,7 @@ function toggleSection(sectionId) {
   section.classList.toggle('hidden');
   console.log(`🔄 Toggled section: ${sectionId}, Now hidden? ${section.classList.contains('hidden')}`);
 }
+
 
 // =============================
 // ✅ Load Functions Inline
