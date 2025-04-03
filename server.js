@@ -301,7 +301,7 @@ app.get('/view', requireLogin, (req, res) => {
         }
         if (Array.isArray(st.imageHistory)) {
           st.imageHistory.forEach(url => {
-            html += `<img src="${url}" alt="Show & Tell Image" />`;
+            html += `<a href="${url}" download><img src="${url}" alt="Show & Tell Image" title="Click to view/download" /></a>`;
           });
         }
         html += `</div>`;
@@ -338,11 +338,46 @@ app.get('/view', requireLogin, (req, res) => {
         html += `<div class="response-section">
                     <h4>Drawings</h4>`;
         dateData['drawing'].imageUrls.forEach(url => {
-          html += `<img src="${url}" alt="Drawing" />`;
+          html += `<a href="${url}" target="_blank" download><img src="${url}" alt="Drawing" title="Click to view/download" /></a>`;
+
         });
         html += `</div>`;
       }
     });
+
+    html += `
+      <div id="lightboxOverlay" style="display:none; position:fixed; top:0; left:0; width:100vw; height:100vh; background:rgba(0,0,0,0.85); z-index:9999; justify-content:center; align-items:center;">
+        <div style="text-align:center;">
+          <img id="lightboxImage" src="" style="max-width:90vw; max-height:80vh; border:4px solid white; border-radius:10px; box-shadow:0 0 20px black;" />
+          <br />
+          <a id="lightboxDownload" href="#" download style="display:inline-block; margin-top:10px; font-size:18px; color:white; background:#4CAF50; padding:10px 20px; border-radius:5px; text-decoration:none;">Download Image</a>
+        </div>
+      </div>
+
+      <script>
+        document.addEventListener('DOMContentLoaded', () => {
+          const overlay = document.getElementById('lightboxOverlay');
+          const lightboxImage = document.getElementById('lightboxImage');
+          const downloadBtn = document.getElementById('lightboxDownload');
+
+          document.querySelectorAll('.response-section img').forEach(img => {
+            img.addEventListener('click', (e) => {
+              e.preventDefault();
+              lightboxImage.src = img.src;
+              downloadBtn.href = img.src;
+              overlay.style.display = 'flex';
+            });
+          });
+
+          overlay.addEventListener('click', (e) => {
+            if (e.target === overlay || e.target === lightboxImage) {
+              overlay.style.display = 'none';
+            }
+          });
+        });
+      </script>
+    `;
+
   
     res.send(html);
   });
