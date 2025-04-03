@@ -192,9 +192,8 @@ app.post('/login', (req, res) => {
     req.session.isAdmin = true;
     return res.redirect('/view'); // Admin gets the backend view
   }
-  // Else if Alyssa logs in (using her own credentials)
-  // (You can change 'alyssa' and 'userpass' to whatever her credentials should be)
-  if (username === 'alyssa' && password === 'userpass') {
+  // If Alyssa logs in (using her own env variables)
+  if (username === process.env.USER_USER && password === process.env.USER_PASS) {
     req.session.loggedIn = true;
     req.session.isAdmin = false;
     return res.redirect('/'); // Alyssa gets the front-end view
