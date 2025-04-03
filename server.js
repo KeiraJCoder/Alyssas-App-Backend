@@ -482,18 +482,21 @@ app.get('/view', requireLogin, (req, res) => {
 
     html += `
       <div id="lightboxOverlay" style="display:none; position:fixed; top:0; left:0; width:100vw; height:100vh; background:rgba(0,0,0,0.85); z-index:9999; justify-content:center; align-items:center;">
-        <div style="text-align:center;">
-          <img id="lightboxImage" src="" style="max-width:90vw; max-height:80vh; border:4px solid white; border-radius:10px; box-shadow:0 0 20px black;" />
-          <br />
-          <a id="lightboxDownload" href="#" download style="display:inline-block; margin-top:10px; font-size:18px; color:white; background:#4CAF50; padding:10px 20px; border-radius:5px; text-decoration:none;">Download Image</a>
-        </div>
+      <div style="text-align:center; position:relative;">
+        <button id="closeLightbox" style="position:absolute; top:-10px; right:-10px; background:red; color:white; border:none; border-radius:50%; width:32px; height:32px; font-size:18px; cursor:pointer;">&times;</button>
+        <img id="lightboxImage" src="" style="max-width:90vw; max-height:80vh; border:4px solid white; border-radius:10px; box-shadow:0 0 20px black;" />
+        <br />
+        <a id="lightboxDownload" href="#" download style="display:inline-block; margin-top:10px; font-size:18px; color:white; background:#4CAF50; padding:10px 20px; border-radius:5px; text-decoration:none;">Download Image</a>
       </div>
+    </div>
+
 
       <script>
         document.addEventListener('DOMContentLoaded', () => {
           const overlay = document.getElementById('lightboxOverlay');
           const lightboxImage = document.getElementById('lightboxImage');
           const downloadBtn = document.getElementById('lightboxDownload');
+          const closeBtn = document.getElementById('closeLightbox'); // ❌ New close button reference
 
           document.querySelectorAll('.response-section img').forEach(img => {
             img.addEventListener('click', (e) => {
@@ -505,12 +508,17 @@ app.get('/view', requireLogin, (req, res) => {
           });
 
           overlay.addEventListener('click', (e) => {
-            if (e.target === overlay || e.target === lightboxImage) {
+            if (e.target === overlay) {
               overlay.style.display = 'none';
             }
           });
+
+          closeBtn.addEventListener('click', () => {
+            overlay.style.display = 'none';
+          });
         });
       </script>
+
     `;
 
   
