@@ -419,16 +419,28 @@ function completeSection(sectionId) {
         shouldSend = false;
         break;
       }
-
+    
       const activityData = selectedActivities.map(activity => ({ activity }));
       existingData['activity-choice'] = activityData;
       response = activityData;
-
+    
       section.classList.add('hidden');
       localStorage.setItem(`activityChoiceComplete_${today}`, 'true');
+    
+      // ✅ Reward only after section is completed
+      stars++;
+      localStorage.setItem("earnedStars", stars);
+      displayStars();
+      playSound('star');
+      confetti({
+        particleCount: 100,
+        spread: 70,
+        origin: { y: 0.6 }
+      });
+    
       break;
     }
-
+    
     default:
       shouldSend = false;
       break;
@@ -657,6 +669,11 @@ function setupAnswerInput() {
       spread: 70,
       origin: { y: 0.6 }
     });
+    stars++;
+    localStorage.setItem("earnedStars", stars);
+    displayStars();
+    playSound('star');
+
   
     // ✅ Track topic as used
     if (selectedTopic) {
@@ -774,11 +791,23 @@ function selectMood(mood) {
   if (nav) nav.classList.remove('hidden');
   if (moodCard) moodCard.classList.add('hidden');
 
-  localStorage.setItem(`moodCheckComplete_${today}`, 'true'); // ✅ Save completion for today
+  localStorage.setItem(`moodCheckComplete_${today}`, 'true');
 
+  // ✅ Reward logic
+  stars++;
+  localStorage.setItem("earnedStars", stars);
+  displayStars();
   playSound('star');
+  confetti({
+    particleCount: 100,
+    spread: 70,
+    origin: { y: 0.6 }
+  });
+  
+
   completeSection('mood-check');
 }
+
 
 
 function selectActivity(activity, el) {
@@ -1013,9 +1042,6 @@ async function submitDrawing(event) {
   event.preventDefault();
   event.stopPropagation();
 
-  // Play sound right away (instant feedback), but DON'T increment star yet
-  playSound('star');
-
   const canvas = document.getElementById('drawCanvas');
   const statusEl = document.getElementById('drawingStatus');
   const submitButton = document.getElementById('submitDrawingBtn');
@@ -1025,7 +1051,7 @@ async function submitDrawing(event) {
     return;
   }
 
-  const ctx = canvas.getContext('2d'); // Needed to clear canvas later
+  const ctx = canvas.getContext('2d');
   const today = new Date().toISOString().split('T')[0];
   const drawingKey = `drawingCount_${today}`;
   let drawingCount = parseInt(localStorage.getItem(drawingKey) || '0');
@@ -1039,6 +1065,12 @@ async function submitDrawing(event) {
   }
 
   const base64Image = canvas.toDataURL('image/jpg');
+
+  // ✅ Visual feedback while sending
+  statusEl.innerHTML = `<span class="loading"></span> Sending drawing...`;
+  statusEl.style.color = "black";
+  submitButton.disabled = true;
+  submitButton.style.opacity = '0.5';
 
   try {
     const res = await fetch('https://alyssas-app-backend.onrender.com/submit', {
@@ -1056,23 +1088,19 @@ async function submitDrawing(event) {
     stars++;
     localStorage.setItem("earnedStars", stars);
     displayStars();
+    playSound('star');
 
-    // ✅ Increment drawing count
-    drawingCount++;
-    localStorage.setItem(drawingKey, drawingCount);
-
-    // ✅ Update visual counter
-    updateDrawingCounter();
-
-    // ✅ Clear canvas
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-    // ✅ 🎉 Fire confetti!
+    // ✅ Confetti 🎉
     confetti({
       particleCount: 100,
       spread: 70,
       origin: { y: 0.6 }
     });
+
+    drawingCount++;
+    localStorage.setItem(drawingKey, drawingCount);
+    updateDrawingCounter();
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
 
     if (drawingCount >= 5) {
       statusEl.textContent = "🎉 That's 5 drawings today — you're on fire! 🔥";
@@ -1082,15 +1110,18 @@ async function submitDrawing(event) {
     } else {
       statusEl.textContent = `✅ Drawing ${drawingCount}/5 sent! Keep going if you want!`;
       statusEl.style.color = "green";
+      submitButton.disabled = false;
+      submitButton.style.opacity = '1';
     }
 
   } catch (err) {
     console.error('Error uploading drawing:', err);
     statusEl.textContent = "❌ Something went wrong submitting your drawing.";
     statusEl.style.color = "red";
+    submitButton.disabled = false;
+    submitButton.style.opacity = '1';
   }
 }
-
 
 /* ===============================
    VIEW RESPONSES Setup

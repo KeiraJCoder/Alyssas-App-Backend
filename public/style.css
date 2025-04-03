@@ -790,21 +790,19 @@ canvas#drawCanvas {
 
 .loading {
   display: inline-block;
-  width: 20px;
-  height: 20px;
-  border: 3px solid rgba(0, 0, 0, 0.2);
-  border-top: 3px solid #4b9cdb;
+  width: 1em;
+  height: 1em;
+  border: 2px solid #ccc;
+  border-top: 2px solid #333;
   border-radius: 50%;
-  animation: spin 1s linear infinite;
-  vertical-align: middle;
+  animation: spin 0.8s linear infinite;
   margin-right: 8px;
+  vertical-align: middle;
 }
+
 
 @keyframes spin {
   to {
     transform: rotate(360deg);
   }
 }
-
-  
-  
