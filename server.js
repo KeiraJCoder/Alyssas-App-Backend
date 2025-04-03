@@ -36,7 +36,7 @@ const upload = multer({ storage });
 app.use(bodyParser.json({ limit: '10mb' }));
 app.use(bodyParser.urlencoded({ extended: true }));
 // Serve app files only after login
-app.use('/static', requireLogin, express.static(path.join(__dirname, 'public')));
+
 app.use(session({
   secret: 'your-secret-key',
   resave: false,
@@ -46,6 +46,7 @@ app.use(session({
   }
 }));
 
+app.use('/static', requireLogin, express.static(path.join(__dirname, 'public')));
 
 // Simple login middleware
 function requireLogin(req, res, next) {
@@ -319,9 +320,6 @@ app.post('/submit', conditionalUpload, async (req, res) => {
     }
   }
   
-  
-  
-
   if (Array.isArray(finalData)) {
     if (!Array.isArray(allData[today][sectionId])) {
       allData[today][sectionId] = [];
@@ -422,14 +420,18 @@ app.get('/view', requireLogin, (req, res) => {
         }
       </style>
       <h2>Alyssa's Responses</h2>
-      <div class="btn-bar">
-        <form action="/delete-all" method="POST" style="display:inline;" onsubmit="return confirm('Are you sure you want to delete all responses?');">
+        <div class="btn-bar">
+          <form action="/delete-all" method="POST" style="display:inline;" onsubmit="return confirm('Are you sure you want to delete all responses?');">
           <button type="submit">🗑️ Delete All Responses</button>
         </form>
         <form action="/download-answers" method="GET" style="display:inline;">
           <button type="submit" class="download">💾 Download All Answers</button>
         </form>
+        <form action="/logout" method="GET" style="display:inline;">
+          <button class="logout" type="submit" style="background:#ccc; border:none; padding:10px 20px; border-radius:5px; font-size:16px;">🚪 Logout</button>
+        </form>
       </div>
+
     `;
   
     // Sort dates newest first
