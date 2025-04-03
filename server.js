@@ -248,7 +248,7 @@ function conditionalUpload(req, res, next) {
 }
 
 // Handle submission
-app.post('/submit', conditionalUpload, (req, res) => {
+app.post('/submit', conditionalUpload, async (req, res) => {
   const { sectionId, response, drawing } = req.body;
   let finalData = {};
 
@@ -279,50 +279,57 @@ app.post('/submit', conditionalUpload, (req, res) => {
       const { createCanvas, loadImage } = require('canvas');
       const base64Data = drawing.replace(/^data:image\/png;base64,/, '');
       const buffer = Buffer.from(base64Data, 'base64');
-  
+
       // Load the PNG image from buffer
       const img = await loadImage(buffer);
       const canvas = createCanvas(img.width, img.height);
       const ctx = canvas.getContext('2d');
-  
+
       // Fill background with white
       ctx.fillStyle = '#ffffff';
       ctx.fillRect(0, 0, canvas.width, canvas.height);
-  
+
       // Draw original image over white background
       ctx.drawImage(img, 0, 0);
-  
+
       // Save as JPEG (with white background)
-      const out = fs.createWriteStream(path.join(__dirname, 'uploads', `drawing-${Date.now()}.jpg`));
+      const filename = `drawing-${Date.now()}.jpg`;
+      const filepath = path.join(__dirname, 'uploads', filename);
+      const out = fs.createWriteStream(filepath);
       const stream = canvas.createJPEGStream({ quality: 0.95 });
       stream.pipe(out);
-  
-      // When done, add URL to the response store
+
       out.on('finish', () => {
-        const filename = out.path.split(path.sep).pop();
         const url = `/uploads/${filename}`;
-  
         if (!allData[today]['drawing']) allData[today]['drawing'] = {};
         if (!allData[today]['drawing'].imageUrls) allData[today]['drawing'].imageUrls = [];
+
         if (allData[today]['drawing'].imageUrls.length < 5) {
           allData[today]['drawing'].imageUrls.push(url);
         }
+
         fs.writeFileSync(DATA_FILE, JSON.stringify(allData, null, 2));
         return res.status(200).json({ status: 'ok' });
       });
+
+      out.on('error', (err) => {
+        console.error('Stream error:', err);
+        return res.status(500).json({ error: 'Failed to save drawing.' });
+      });
+
+      return; // Prevent falling through to final response
     } catch (err) {
       console.error('Drawing conversion error:', err);
       return res.status(500).json({ error: 'Drawing save failed.' });
     }
   }
-  
 
   if (Array.isArray(finalData)) {
     if (!Array.isArray(allData[today][sectionId])) {
       allData[today][sectionId] = [];
     }
     allData[today][sectionId].push(...finalData);
-  
+
     // ✅ Sort by timestamp descending (most recent first)
     allData[today][sectionId].sort((a, b) => {
       return new Date(b.timestamp || 0) - new Date(a.timestamp || 0);
@@ -331,11 +338,11 @@ app.post('/submit', conditionalUpload, (req, res) => {
     if (!allData[today][sectionId]) allData[today][sectionId] = {};
     Object.assign(allData[today][sectionId], finalData);
   }
-  
-  fs.writeFileSync(DATA_FILE, JSON.stringify(allData, null, 2));
-  res.status(200).json({ status: 'ok'});
 
+  fs.writeFileSync(DATA_FILE, JSON.stringify(allData, null, 2));
+  res.status(200).json({ status: 'ok' });
 });
+
 
 // View responses
 app.get('/view', requireLogin, (req, res) => {
