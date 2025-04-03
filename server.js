@@ -12,6 +12,12 @@ app.use(cors({
   origin: ['https://keirajcoder.github.io', 'http://127.0.0.1:5500']
 }));
 
+// Serve static files (including sounds and images) from 'public/assets'
+app.use('/static', express.static(path.join(__dirname, 'public')));
+
+// Serve uploaded files from the 'uploads' directory
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+
 // Setup storage for image uploads
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
@@ -29,7 +35,8 @@ const upload = multer({ storage });
 // Middleware
 app.use(bodyParser.json({ limit: '10mb' }));
 app.use(bodyParser.urlencoded({ extended: true }));
-app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+// Serve app files only after login
+app.use('/static', requireLogin, express.static(path.join(__dirname, 'public')));
 app.use(session({
   secret: 'your-secret-key',
   resave: false,
@@ -65,44 +72,54 @@ app.get('/login', (req, res) => {
   res.send(`
     <style>
       body {
-        font-family: sans-serif;
-        background: #f9f9ff;
+        font-family: 'Comic Sans MS', 'Poppins', sans-serif;
+        background: linear-gradient(to right, #ffd6f6, #d6f0ff);
         display: flex;
         align-items: center;
         justify-content: center;
         height: 100vh;
         margin: 0;
       }
+
       .login-box {
-        background: #fff;
+        background: #fff8fd;
         padding: 30px;
-        border-radius: 12px;
-        box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        border-radius: 16px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
         width: 100%;
-        max-width: 350px;
+        max-width: 380px;
         text-align: center;
+        border: 2px dashed #ffaadd;
       }
+
       .login-box h2 {
         margin-bottom: 10px;
-        text-transform: uppercase;
-        color: #444;
+        font-size: 1.8rem;
+        color: #d63384;
+        text-shadow: 1px 1px 0 #fff;
       }
+
       .login-box small {
         display: block;
         margin-bottom: 20px;
-        color: #888;
+        color: #666;
+        font-size: 0.95rem;
       }
+
       .login-box input {
         width: 100%;
         padding: 10px;
         margin: 10px 0;
-        border: 1px solid #ccc;
-        border-radius: 6px;
+        border: 2px solid #ccc;
+        border-radius: 10px;
         font-size: 16px;
+        background: #fff;
       }
+
       .password-wrapper {
         position: relative;
       }
+
       .toggle-password {
         position: absolute;
         right: 12px;
@@ -111,42 +128,52 @@ app.get('/login', (req, res) => {
         cursor: pointer;
         font-size: 18px;
         user-select: none;
-        color: #777;
+        color: #888;
       }
+
       .login-box button {
         width: 100%;
         padding: 12px;
-        background: #4CAF50;
+        background: #f78bd0;
         color: white;
         border: none;
-        border-radius: 6px;
+        border-radius: 30px;
         font-size: 16px;
         cursor: pointer;
-        transition: background 0.3s ease;
+        transition: background 0.3s ease, transform 0.1s ease;
       }
+
       .login-box button:hover {
-        background: #45a049;
+        background: #ff6ac1;
+        transform: scale(1.03);
       }
+
+      .login-box button:active {
+        transform: scale(0.97);
+      }
+
       .error-message {
         color: red;
-        margin-top: 10px;
+        margin-top: 12px;
         font-weight: bold;
       }
     </style>
 
+
     <div class="login-box">
-      <h2>Login</h2>
-      <small>🔒 Admin Access</small>
+      <h2>🌟 Welcome, Alyssa! 🌟</h2>
+      <small>Enter your magical name and secret password</small>
       <form method="POST" action="/login">
-        <input name="username" placeholder="Username" required />
+        <input name="username" placeholder="Your Name" required />
         <div class="password-wrapper">
-          <input type="password" id="passwordInput" name="password" placeholder="Password" required />
+          <input type="password" id="passwordInput" name="password" placeholder="Your Password" required />
           <span class="toggle-password" onclick="togglePassword()">👁️</span>
         </div>
-        <button type="submit">Login</button>
+        <button type="submit">✨ Enter My World ✨</button>
       </form>
-      ${error ? `<div class="error-message">❌ Invalid username or password</div>` : ''}
+      ${error ? `<div class="error-message">❌ Oops! Try again, magic one.</div>` : ''}
     </div>
+
 
     <script>
       function togglePassword() {
@@ -161,10 +188,16 @@ app.post('/login', (req, res) => {
   const { username, password } = req.body;
   if (username === process.env.ADMIN_USER && password === process.env.ADMIN_PASS) {
     req.session.loggedIn = true;
-    res.redirect('/view');
+    res.redirect('/');
   } else {
     res.redirect('/login?error=1');
   }
+});
+
+app.get('/logout', (req, res) => {
+  req.session.destroy(() => {
+    res.redirect('/login');
+  });
 });
 
 
@@ -471,6 +504,10 @@ app.get('/view', requireLogin, (req, res) => {
   });
   
   
+// Serve the main app after login
+app.get('/', requireLogin, (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'index.html'));
+});
 
 const PORT = process.env.PORT || 3001;
 app.listen(PORT, () => console.log(`Call Companion backend running on http://localhost:${PORT}`));
