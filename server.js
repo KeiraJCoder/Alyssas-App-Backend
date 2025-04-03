@@ -276,24 +276,46 @@ app.post('/submit', conditionalUpload, (req, res) => {
   console.log('✏️ Drawing submitted', { sectionId, drawingLength: drawing?.length });
   if (drawing && sectionId === 'drawing') {
     try {
-      const drawingBuffer = Buffer.from(drawing.replace(/^data:image\/png;base64,/, ''), 'base64');
-      const filename = `drawing-${Date.now()}.jpg`;
-      const filepath = path.join(__dirname, 'uploads', filename);
-      fs.writeFileSync(filepath, drawingBuffer);
-      const url = `/uploads/${filename}`;
-
-      if (!allData[today]['drawing']) allData[today]['drawing'] = {};
-      if (!allData[today]['drawing'].imageUrls) allData[today]['drawing'].imageUrls = [];
-      if (allData[today]['drawing'].imageUrls.length < 5) {
-        allData[today]['drawing'].imageUrls.push(url);
-      }
-      fs.writeFileSync(DATA_FILE, JSON.stringify(allData, null, 2));
-      return res.status(200).json({ status: 'ok' });
+      const { createCanvas, loadImage } = require('canvas');
+      const base64Data = drawing.replace(/^data:image\/png;base64,/, '');
+      const buffer = Buffer.from(base64Data, 'base64');
+  
+      // Load the PNG image from buffer
+      const img = await loadImage(buffer);
+      const canvas = createCanvas(img.width, img.height);
+      const ctx = canvas.getContext('2d');
+  
+      // Fill background with white
+      ctx.fillStyle = '#ffffff';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+  
+      // Draw original image over white background
+      ctx.drawImage(img, 0, 0);
+  
+      // Save as JPEG (with white background)
+      const out = fs.createWriteStream(path.join(__dirname, 'uploads', `drawing-${Date.now()}.jpg`));
+      const stream = canvas.createJPEGStream({ quality: 0.95 });
+      stream.pipe(out);
+  
+      // When done, add URL to the response store
+      out.on('finish', () => {
+        const filename = out.path.split(path.sep).pop();
+        const url = `/uploads/${filename}`;
+  
+        if (!allData[today]['drawing']) allData[today]['drawing'] = {};
+        if (!allData[today]['drawing'].imageUrls) allData[today]['drawing'].imageUrls = [];
+        if (allData[today]['drawing'].imageUrls.length < 5) {
+          allData[today]['drawing'].imageUrls.push(url);
+        }
+        fs.writeFileSync(DATA_FILE, JSON.stringify(allData, null, 2));
+        return res.status(200).json({ status: 'ok' });
+      });
     } catch (err) {
-      console.error('Drawing base64 upload error:', err);
+      console.error('Drawing conversion error:', err);
       return res.status(500).json({ error: 'Drawing save failed.' });
     }
   }
+  
 
   if (Array.isArray(finalData)) {
     if (!Array.isArray(allData[today][sectionId])) {
