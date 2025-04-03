@@ -184,25 +184,26 @@ app.get('/login', (req, res) => {
   `);
 });
 
+// POST /login route – processes the login submission
 app.post('/login', (req, res) => {
   const { username, password } = req.body;
-  // If the admin logs in (using env variables)
+  // If the admin logs in using the env variables:
   if (username === process.env.ADMIN_USER && password === process.env.ADMIN_PASS) {
     req.session.loggedIn = true;
     req.session.isAdmin = true;
-    return res.redirect('/view'); // Admin gets the backend view
+    return res.redirect('/view'); // Admin is sent to the backend view
   }
-  // If Alyssa logs in (using her own env variables)
+  // If the regular user (Alyssa) logs in using her env variables:
   if (username === process.env.USER_USER && password === process.env.USER_PASS) {
     req.session.loggedIn = true;
     req.session.isAdmin = false;
-    return res.redirect('/'); // Alyssa gets the front-end view
+    return res.redirect('/'); // Alyssa is sent to the frontend view
   }
-  // If credentials do not match, redirect back to the login page with an error
+  // If credentials do not match, redirect back with an error
   return res.redirect('/login?error=1');
 });
 
-
+// Logout route remains the same
 app.get('/logout', (req, res) => {
   req.session.destroy(() => {
     res.redirect('/login');
