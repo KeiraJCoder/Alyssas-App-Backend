@@ -273,7 +273,7 @@ app.post('/submit', conditionalUpload, (req, res) => {
   if (drawing && sectionId === 'drawing') {
     try {
       const drawingBuffer = Buffer.from(drawing.replace(/^data:image\/png;base64,/, ''), 'base64');
-      const filename = `drawing-${Date.now()}.png`;
+      const filename = `drawing-${Date.now()}.jpg`;
       const filepath = path.join(__dirname, 'uploads', filename);
       fs.writeFileSync(filepath, drawingBuffer);
       const url = `/uploads/${filename}`;
