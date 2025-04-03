@@ -186,13 +186,23 @@ app.get('/login', (req, res) => {
 
 app.post('/login', (req, res) => {
   const { username, password } = req.body;
+  // If the admin logs in (using env variables)
   if (username === process.env.ADMIN_USER && password === process.env.ADMIN_PASS) {
     req.session.loggedIn = true;
-    res.redirect('/');
-  } else {
-    res.redirect('/login?error=1');
+    req.session.isAdmin = true;
+    return res.redirect('/view'); // Admin gets the backend view
   }
+  // Else if Alyssa logs in (using her own credentials)
+  // (You can change 'alyssa' and 'userpass' to whatever her credentials should be)
+  if (username === 'alyssa' && password === 'userpass') {
+    req.session.loggedIn = true;
+    req.session.isAdmin = false;
+    return res.redirect('/'); // Alyssa gets the front-end view
+  }
+  // If credentials do not match, redirect back to the login page with an error
+  return res.redirect('/login?error=1');
 });
+
 
 app.get('/logout', (req, res) => {
   req.session.destroy(() => {
