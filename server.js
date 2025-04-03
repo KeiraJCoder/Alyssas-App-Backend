@@ -40,8 +40,12 @@ app.use('/static', requireLogin, express.static(path.join(__dirname, 'public')))
 app.use(session({
   secret: 'your-secret-key',
   resave: false,
-  saveUninitialized: false
+  saveUninitialized: false,
+  cookie: {
+    maxAge: 15 * 60 * 1000 // ⏱ 15 minutes in milliseconds
+  }
 }));
+
 
 // Simple login middleware
 function requireLogin(req, res, next) {
