@@ -1038,7 +1038,7 @@ async function submitDrawing(event) {
     return;
   }
 
-  const base64Image = canvas.toDataURL('image/png');
+  const base64Image = canvas.toDataURL('image/jpg');
 
   try {
     const res = await fetch('https://alyssas-app-backend.onrender.com/submit', {
