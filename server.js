@@ -9,8 +9,14 @@ const app = express();
 const cors = require('cors');
 
 app.use(cors({
-  origin: ['https://keirajcoder.github.io', 'http://127.0.0.1:5500']
+  origin: [
+    'https://keirajcoder.github.io',
+    'http://127.0.0.1:5500',
+    'https://www.alyssas-app.co.uk' // ✅ Add your live domain
+  ],
+  credentials: true
 }));
+
 
 // Serve static files (including sounds and images) from 'public/assets'
 app.use('/static', express.static(path.join(__dirname, 'public')));
